@@ -1,0 +1,3 @@
+{
+    "dotnet.defaultSolution": "LibraryAPI.UnitTests.sln"
+}

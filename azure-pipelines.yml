@@ -1,0 +1,54 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  artefactName: 'LibraryAPI'
+  buildJobName: 'Build'
+  jobName: ''
+  stageName: ''
+  webAppName: 'LibraryManagerAPI'
+  azureSubscription: 'Pay-As-You-Go(a09bd86d-baab-4af7-aed3-eaf8114fc4d8)'
+
+stages:
+ - stage: "Build"
+   jobs:
+   - job:
+     steps:
+      - task: DotNetCoreCLI@2
+        displayName: 'dotnet build'
+        inputs:
+          command: 'build'
+          projects: '**/*.csproj'
+          arguments: '--configuration $(buildConfiguration)'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'dotnet unit test'
+        inputs:
+          command: 'test'
+          projects: '**/*UnitTests/*.csproj'
+          arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'dotnet publish'
+        inputs:
+          command: publish
+          publishWebProjects: false
+          arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'upload artefacts'
+        inputs:
+          targetPath: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: '${{ variables.artefactName }}'
+
+ - template: stages.yml
+   parameters:
+     stageName: 'DeployApp'
+     jobName: 'Deploy'
+     azureSubscription: ${{ variables.azureSubscription }}
+     webAppName: ${{ variables.webAppName }}
+     artefactName: ${{ variables.artefactName }}        

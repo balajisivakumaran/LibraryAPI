@@ -1,0 +1,29 @@
+parameters:
+- name: stageName
+  default: ''
+- name: jobName
+  default: ''
+- name: artefactName
+  default: ''
+- name: azureSubscription
+  default: ''
+- name: webAppName
+  default: ''
+
+jobs:
+  - job:
+    steps:
+     - task: DownloadPipelineArtifact@2
+       displayName: "Download Pipeline Artifact"
+       inputs:
+         artifactName: ${{ parameters.artefactName }}
+         targetPath: $(Build.ArtifactStagingDirectory)
+
+     - task: AzureRmWebAppDeployment@4
+       displayName: 'azure API service deployment'
+       inputs:
+         ConnectionType: 'AzureRM'
+         azureSubscription: ${{ parameters.azureSubscription }}
+         appType: 'apiApp'
+         WebAppName: ${{ parameters.webAppName }}
+         packageForLinux: '$(Build.ArtifactStagingDirectory)/**/*.zip'
