@@ -9,16 +9,16 @@ parameters:
   default: ''
 
 jobs:
-  - job:
+  - job: ${{ parameters.deployJobName }}
     steps:
      - task: DownloadPipelineArtifact@2
-       displayName: "Download Pipeline Artifact"
+       displayName: "download pipeline artifact"
        inputs:
          artifactName: ${{ parameters.artefactName }}
          targetPath: $(Build.ArtifactStagingDirectory)
 
      - task: AzureRmWebAppDeployment@4
-       displayName: 'azure API service deployment'
+       displayName: 'azure api service deployment'
        inputs:
          ConnectionType: 'AzureRM'
          azureSubscription: ${{ parameters.azureSubscription }}

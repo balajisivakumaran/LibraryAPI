@@ -17,7 +17,7 @@ variables:
 stages:
  - stage: "Build"
    jobs:
-   - job:
+   - job: 'Build'
      steps:
       - task: DotNetCoreCLI@2
         displayName: 'dotnet build'
@@ -49,7 +49,7 @@ stages:
  - template: deploystage.yml
    parameters:
      deployStageName: 'DeployApp'
-     deployJobName: 'Deploy'
+     deployJobName: 'deploy'
      azureSubscription: ${{ variables.azureSubscription }}
      webAppName: ${{ variables.webAppName }}
      artefactName: ${{ variables.artefactName }}
@@ -57,5 +57,5 @@ stages:
  - template: teststage.yml
    parameters:
      testStageName: 'TestApp'
-     testJobName: 'Test'
+     testJobName: 'test'
      artefactName: ${{ variables.artefactName }}    

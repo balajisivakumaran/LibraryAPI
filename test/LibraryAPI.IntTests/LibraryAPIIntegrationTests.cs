@@ -8,24 +8,25 @@ public class LibraryAPIIntegrationTests
     private RestClient _restClient;
     public LibraryAPIIntegrationTests()
     {
-        _restClient = new RestClient(new Uri("https://librarymanagerapi.azurewebsites.net/"));
+        _restClient = new RestClient(
+            new Uri("https://librarymanagerapi.azurewebsites.net/"));
     }
 
     [Fact, Order(1)]
-    public void Check_StatusCode_Returned_IsOK()
+    public async Task Check_StatusCode_Returned_IsOKAsync()
     {
         //Arrange
         RestRequest restRequest = new RestRequest("api/v1/books", Method.Get);
 
         //Act
-        RestResponse<Book> response = _restClient.Execute<Book>(restRequest);
+        RestResponse<Book> response = await _restClient.ExecuteAsync<Book>(restRequest);
 
         //Assert
         response.StatusCode.Equals(HttpStatusCode.OK);
     }
 
     [Fact, Order(2)]
-    public void Ensure_ListOfBookRecords_IsReturned_FromDataSeed()
+    public async Task Ensure_ListOfBookRecords_IsReturned_FromDataSeedAsync()
     {
         //Arrange
         /*Books list is data seeded*/
@@ -34,7 +35,7 @@ public class LibraryAPIIntegrationTests
         RestRequest restRequest = new RestRequest("api/v1/books", Method.Get);
 
         //Act
-        RestResponse<List<Book>> responses = _restClient.Execute<List<Book>>(restRequest);
+        RestResponse<List<Book>> responses = await _restClient.ExecuteAsync<List<Book>>(restRequest);
 
         //Assert
         /*Magic number: 3 Total pre-seeded data=3. Test is looking if the pre-seeded data count tallys*/
@@ -48,7 +49,7 @@ public class LibraryAPIIntegrationTests
 
     [Theory, Order(3)]
     [MemberData(nameof(TestDataGenerator.AddBook), MemberType = typeof(TestDataGenerator))]
-    public void Ensure_Enduser_IsAbleTo_AddaBook(string title, string author, int year)
+    public async Task Ensure_Enduser_IsAbleTo_AddaBookAsync(string title, string author, int year)
     {
         //Arrange
         var book = new Book{
@@ -64,7 +65,7 @@ public class LibraryAPIIntegrationTests
         restRequest.AddJsonBody(serializeBook);
 
         //Act
-        RestResponse<Book> response = _restClient.Execute<Book>(restRequest);
+        RestResponse<Book> response = await _restClient.ExecuteAsync<Book>(restRequest);
 
         //Assert
         response.Data?.Id.Should().BeGreaterThan(0);
@@ -76,7 +77,7 @@ public class LibraryAPIIntegrationTests
 
     [Theory, Order(4)]
     [MemberData(nameof(TestDataGenerator.UpdateBook), MemberType = typeof(TestDataGenerator))]
-    public void Ensure_Enduser_IsAbleTo_UpdateBook(int id, string title, string author, int year)
+    public async Task Ensure_Enduser_IsAbleTo_UpdateBookAsync(int id, string title, string author, int year)
     {
         //Arrange
         var book = new Book{
@@ -92,7 +93,7 @@ public class LibraryAPIIntegrationTests
         restRequest.AddJsonBody(serializeBook);
 
         //Act
-        RestResponse<Book> response = _restClient.Execute<Book>(restRequest);
+        RestResponse<Book> response = await _restClient.ExecuteAsync<Book>(restRequest);
 
         //Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -101,11 +102,11 @@ public class LibraryAPIIntegrationTests
 
     //Test to verify DELETE verb and also does the tear down
     [Fact, Order(5)]
-    public void Ensure_Enduser_IsAbleTo_DeleteBooks()
+    public async Task Ensure_Enduser_IsAbleTo_DeleteBooksAsync()
     {
         //Arrange        
         RestRequest restRequest = new RestRequest("api/v1/books", Method.Get);
-        RestResponse<List<Book>> responses = _restClient.Execute<List<Book>>(restRequest);
+        RestResponse<List<Book>> responses = await _restClient.ExecuteAsync<List<Book>>(restRequest);
         
         /*Magic number: 3 Total pre-seeded data=3, the below selects any ids greater than 3*/
         List<int> bookIds = responses.Data!.Where(q => q.Id > 3).Select(q => q.Id).ToList();
