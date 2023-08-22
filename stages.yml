@@ -23,3 +23,14 @@ stages:
                azureSubscription: ${{ parameters.azureSubscription }}
                webAppName: ${{ parameters.webAppName }}
                artefactName: ${{ parameters.artefactName }}
+
+     - stage: ${{ parameters.stageName }}
+       dependsOn:
+         - DeployApp
+       condition: succeeded('DeployApp')
+       jobs:
+           - template: testjob.yml
+             parameters:
+               stageName: ${{ parameters.stageName }}
+               jobName: 'Test'
+               artefactName: ${{ parameters.artefactName }}   

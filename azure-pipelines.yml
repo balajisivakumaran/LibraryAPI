@@ -51,4 +51,10 @@ stages:
      jobName: 'Deploy'
      azureSubscription: ${{ variables.azureSubscription }}
      webAppName: ${{ variables.webAppName }}
-     artefactName: ${{ variables.artefactName }}        
+     artefactName: ${{ variables.artefactName }}
+     
+ - template: stages.yml
+   parameters:
+     stageName: 'TestApp'
+     jobName: 'Test'
+     artefactName: ${{ variables.artefactName }}    

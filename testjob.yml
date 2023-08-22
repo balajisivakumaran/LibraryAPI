@@ -1,0 +1,23 @@
+parameters:
+- name: stageName
+  default: ''
+- name: jobName
+  default: ''
+- name: artefactName
+  default: ''
+
+
+jobs:
+  - job:
+    steps:
+     - task: DownloadPipelineArtifact@2
+       displayName: "Download Pipeline Artifact"
+       inputs:
+         artifactName: ${{ parameters.artefactName }}
+         targetPath: $(Build.ArtifactStagingDirectory)
+
+     - task: DotNetCoreCLI@2
+       displayName: 'dotnet Integration|Enduser test'
+       inputs:
+         command: 'test'
+         projects: '**/*IntTests/*.csproj'
