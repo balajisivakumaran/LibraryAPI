@@ -1,5 +1,7 @@
 parameters:
-- name: stageName
+- name: deployStageName
+  default: ''
+- name: testStageName
   default: ''
 - name: jobName
   default: ''

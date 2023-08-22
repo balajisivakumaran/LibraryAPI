@@ -9,7 +9,8 @@ variables:
   artefactName: 'LibraryAPI'
   buildJobName: 'Build'
   jobName: ''
-  stageName: ''
+  deployStageName: ''
+  testStageName: ''
   webAppName: 'LibraryManagerAPI'
   azureSubscription: 'Pay-As-You-Go(a09bd86d-baab-4af7-aed3-eaf8114fc4d8)'
 
@@ -47,7 +48,7 @@ stages:
 
  - template: stages.yml
    parameters:
-     stageName: 'DeployApp'
+     deployStageName: 'DeployApp'
      jobName: 'Deploy'
      azureSubscription: ${{ variables.azureSubscription }}
      webAppName: ${{ variables.webAppName }}
@@ -55,6 +56,6 @@ stages:
      
  - template: stages.yml
    parameters:
-     stageName: 'TestApp'
+     testStageName: 'TestApp'
      jobName: 'Test'
      artefactName: ${{ variables.artefactName }}    

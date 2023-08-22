@@ -1,5 +1,7 @@
 parameters:
-- name: stageName
+- name: deployStageName
+  default: ''
+- name: testStageName
   default: ''
 - name: jobName
   default: ''
@@ -11,26 +13,26 @@ parameters:
   default: ''
 
 stages:
-     - stage: ${{ parameters.stageName }}
+     - stage: ${{ parameters.deployStageName }}
        dependsOn:
          - Build
        condition: succeeded('Build')
        jobs:
            - template: deployjob.yml
              parameters:
-               stageName: ${{ parameters.stageName }}
+               stageName: ${{ parameters.deployStageName }}
                jobName: 'Deploy'
                azureSubscription: ${{ parameters.azureSubscription }}
                webAppName: ${{ parameters.webAppName }}
                artefactName: ${{ parameters.artefactName }}
 
-     - stage: ${{ parameters.stageName }}
+     - stage: ${{ parameters.testStageName }}
        dependsOn:
          - DeployApp
        condition: succeeded('DeployApp')
        jobs:
            - template: testjob.yml
              parameters:
-               stageName: ${{ parameters.stageName }}
+               stageName: ${{ parameters.testStageName }}
                jobName: 'Test'
                artefactName: ${{ parameters.artefactName }}   
