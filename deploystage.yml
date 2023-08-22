@@ -1,0 +1,24 @@
+parameters:
+- name: deployStageName
+  default: ''
+- name: deployJobName
+  default: ''
+- name: azureSubscription
+  default: ''
+- name: webAppName
+  default: ''
+- name: artefactName
+  default: ''
+
+stages:
+     - stage: ${{ parameters.deployStageName }}
+       dependsOn:
+         - Build
+       condition: succeeded('Build')
+       jobs:
+           - template: deployjob.yml
+             parameters:
+               jobName: ${{ parameters.deployJobName }}
+               azureSubscription: ${{ parameters.azureSubscription }}
+               webAppName: ${{ parameters.webAppName }}
+               artefactName: ${{ parameters.artefactName }}

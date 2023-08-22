@@ -1,0 +1,18 @@
+parameters:
+- name: testStageName
+  default: ''
+- name: testJobName
+  default: ''
+- name: artefactName
+  default: ''
+
+stages:
+     - stage: ${{ parameters.testStageName }}
+       dependsOn:
+         - DeployApp
+       condition: succeeded('DeployApp')
+       jobs:
+           - template: testjob.yml
+             parameters:
+               jobName: ${{ parameters.testJobName }}
+               artefactName: ${{ parameters.artefactName }}   

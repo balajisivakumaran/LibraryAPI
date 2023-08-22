@@ -46,16 +46,16 @@ stages:
           targetPath: '$(Build.ArtifactStagingDirectory)'
           ArtifactName: '${{ variables.artefactName }}'
 
- - template: stages.yml
+ - template: deploystage.yml
    parameters:
      deployStageName: 'DeployApp'
-     jobName: 'Deploy'
+     deployJobName: 'Deploy'
      azureSubscription: ${{ variables.azureSubscription }}
      webAppName: ${{ variables.webAppName }}
      artefactName: ${{ variables.artefactName }}
      
- - template: stages.yml
+ - template: teststage.yml
    parameters:
      testStageName: 'TestApp'
-     jobName: 'Test'
+     testJobName: 'Test'
      artefactName: ${{ variables.artefactName }}    

@@ -1,9 +1,5 @@
 parameters:
-- name: deployStageName
-  default: ''
-- name: testStageName
-  default: ''
-- name: jobName
+- name: deployJobName
   default: ''
 - name: artefactName
   default: ''
