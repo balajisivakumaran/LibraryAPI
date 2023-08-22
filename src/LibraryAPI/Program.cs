@@ -32,11 +32,11 @@ app.MapGet("api/v1/books/{bookId}", async(AppDbContext context, int bookId) => {
           return Results.Ok(book);
 });
 
-app.MapPost("api/v1/books", async(AppDbContext context, IValidator<Book> validator, Book book) => {
+app.MapPost("api/v1/books", async(AppDbContext context, IValidator<Book> bookValidator, Book book) => {
 
     if(book is null) return Results.BadRequest();
 
-    var validatorResult = await validator.ValidateAsync(book);
+    var validatorResult = await bookValidator.ValidateAsync(book);
 
     if(!validatorResult.IsValid) 
         return Results.ValidationProblem(validatorResult.ToDictionary());
@@ -49,7 +49,7 @@ app.MapPost("api/v1/books", async(AppDbContext context, IValidator<Book> validat
 
 });
 
-app.MapPut("api/v1/books/{bookId}", async(AppDbContext context, IValidator<Book> validator, int bookId, Book book) => {
+app.MapPut("api/v1/books/{bookId}", async(AppDbContext context, IValidator<Book> bookValidator, int bookId, Book book) => {
 
     if(bookId <= 0 || book is null) return Results.BadRequest("Invalid request");
 
@@ -57,7 +57,7 @@ app.MapPut("api/v1/books/{bookId}", async(AppDbContext context, IValidator<Book>
 
     if(bookExist is null)  return Results.NotFound();
 
-    var validatorResult = await validator.ValidateAsync(book);
+    var validatorResult = await bookValidator.ValidateAsync(book);
 
     if(!validatorResult.IsValid) 
         return Results.ValidationProblem(validatorResult.ToDictionary());

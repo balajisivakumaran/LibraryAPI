@@ -12,7 +12,7 @@ namespace LibraryAPI.Helper
         public BookValidator()
         {
             RuleFor( q => q.Id).NotNull();
-            RuleFor(q => q.Title).NotEmpty().MaximumLength(30);
+            RuleFor(q => q.Title).NotEmpty().MaximumLength(55);
             RuleFor(q => q.Author).NotEmpty().MaximumLength(30);
             RuleFor(q => q.YearofPublish).InclusiveBetween(1000, DateTime.Now.Year);
         }

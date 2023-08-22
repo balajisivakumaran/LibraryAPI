@@ -37,6 +37,7 @@ public class LibraryAPIIntegrationTests
         RestResponse<List<Book>> responses = _restClient.Execute<List<Book>>(restRequest);
 
         //Assert
+        /*Magic number: 3 Total pre-seeded data=3. Test is looking if the pre-seeded data count tallys*/
         responses.Data!.Count.Should().Be(3);
 
         foreach (var bookAuthor in bookAuthors)
@@ -98,14 +99,15 @@ public class LibraryAPIIntegrationTests
       
     }
 
-    //Tear Down Test
+    //Test to verify DELETE verb and also does the tear down
     [Fact, Order(5)]
     public void Ensure_Enduser_IsAbleTo_DeleteBooks()
     {
         //Arrange        
         RestRequest restRequest = new RestRequest("api/v1/books", Method.Get);
         RestResponse<List<Book>> responses = _restClient.Execute<List<Book>>(restRequest);
-        int? recordsCount = responses.Data?.Count;
+        
+        /*Magic number: 3 Total pre-seeded data=3, the below selects any ids greater than 3*/
         List<int> bookIds = responses.Data!.Where(q => q.Id > 3).Select(q => q.Id).ToList();
         RestResponse? response;
 

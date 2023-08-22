@@ -33,7 +33,6 @@ public class BookModelTests
         response.ShouldHaveValidationErrorFor(e => e.Title)
             .WithErrorMessage("'Title' must not be empty.")
               .WithSeverity(Severity.Error);
-
     }
 
     [Theory]
