@@ -1,5 +1,4 @@
 using Xunit.Extensions.Ordering;
-using Xunit.Sdk;
 
 namespace LibraryAPI.IntTests;
 
