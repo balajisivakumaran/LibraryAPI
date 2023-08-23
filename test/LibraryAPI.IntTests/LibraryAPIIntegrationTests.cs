@@ -1,7 +1,7 @@
 using Xunit.Extensions.Ordering;
+using Xunit.Sdk;
 
 namespace LibraryAPI.IntTests;
-
 
 public class LibraryAPIIntegrationTests
 {
@@ -9,7 +9,10 @@ public class LibraryAPIIntegrationTests
     public LibraryAPIIntegrationTests()
     {
         _restClient = new RestClient(
-            new Uri("https://librarymanagerapi.azurewebsites.net/"));
+            new Uri("https://librarymanagerapi.azurewebsites.net/"));        
+    
+        /*Ensuring any phantom datas from manual runs are removed*/
+        Ensure_Enduser_IsAbleTo_DeleteBooksAsync();
     }
 
     [Fact, Order(1)]
@@ -102,11 +105,11 @@ public class LibraryAPIIntegrationTests
 
     //Test to verify DELETE verb and also does the tear down
     [Fact, Order(5)]
-    public async Task Ensure_Enduser_IsAbleTo_DeleteBooksAsync()
+    public void Ensure_Enduser_IsAbleTo_DeleteBooksAsync()
     {
         //Arrange        
         RestRequest restRequest = new RestRequest("api/v1/books", Method.Get);
-        RestResponse<List<Book>> responses = await _restClient.ExecuteAsync<List<Book>>(restRequest);
+        RestResponse<List<Book>> responses = _restClient.Execute<List<Book>>(restRequest);
         
         /*Magic number: 3 Total pre-seeded data=3, the below selects any ids greater than 3*/
         List<int> bookIds = responses.Data!.Where(q => q.Id > 3).Select(q => q.Id).ToList();
