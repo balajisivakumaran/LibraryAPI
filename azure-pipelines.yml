@@ -20,28 +20,28 @@ stages:
    - job: 'Build'
      steps:
       - task: DotNetCoreCLI@2
-        displayName: 'dotnet build'
+        displayName: 'Dotnet build'
         inputs:
           command: 'build'
           projects: '**/*.csproj'
           arguments: '--configuration $(buildConfiguration)'
 
       - task: DotNetCoreCLI@2
-        displayName: 'dotnet unit test'
+        displayName: 'Dotnet unit test'
         inputs:
           command: 'test'
           projects: '**/*UnitTests/*.csproj'
           arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
 
       - task: DotNetCoreCLI@2
-        displayName: 'dotnet publish'
+        displayName: 'Dotnet publish'
         inputs:
           command: publish
           publishWebProjects: false
           arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 
       - task: PublishBuildArtifacts@1
-        displayName: 'upload artefacts'
+        displayName: 'Upload artefacts'
         inputs:
           targetPath: '$(Build.ArtifactStagingDirectory)'
           ArtifactName: '${{ variables.artefactName }}'

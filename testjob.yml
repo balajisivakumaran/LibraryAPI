@@ -9,13 +9,13 @@ jobs:
   - job: ${{ parameters.testJobName }}
     steps:
      - task: DownloadPipelineArtifact@2
-       displayName: "download pipeline artifact"
+       displayName: "Download pipeline artifact"
        inputs:
          artifactName: ${{ parameters.artefactName }}
          targetPath: $(Build.ArtifactStagingDirectory)
 
      - task: DotNetCoreCLI@2
-       displayName: 'dotnet integration | enduser test'
+       displayName: 'Dotnet integration | enduser test'
        inputs:
          command: 'test'
          projects: '**/*IntTests/*.csproj'

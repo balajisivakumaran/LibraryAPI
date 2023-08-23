@@ -12,13 +12,13 @@ jobs:
   - job: ${{ parameters.deployJobName }}
     steps:
      - task: DownloadPipelineArtifact@2
-       displayName: "download pipeline artifact"
+       displayName: "Download pipeline artifact"
        inputs:
          artifactName: ${{ parameters.artefactName }}
          targetPath: $(Build.ArtifactStagingDirectory)
 
      - task: AzureRmWebAppDeployment@4
-       displayName: 'azure api service deployment'
+       displayName: 'Azure api service deployment'
        inputs:
          ConnectionType: 'AzureRM'
          azureSubscription: ${{ parameters.azureSubscription }}
