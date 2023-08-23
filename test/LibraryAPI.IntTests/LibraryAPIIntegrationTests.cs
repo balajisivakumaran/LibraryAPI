@@ -10,7 +10,8 @@ public class LibraryAPIIntegrationTests
         _restClient = new RestClient(
             new Uri("https://librarymanagerapi.azurewebsites.net/"));        
     
-        /*Ensuring any phantom datas from manual runs are removed*/
+        /*Ensuring any phantom datas from the 
+        manual runs are purged before the test start*/
         Ensure_Enduser_IsAbleTo_DeleteBooksAsync();
     }
 
@@ -40,7 +41,8 @@ public class LibraryAPIIntegrationTests
         RestResponse<List<Book>> responses = await _restClient.ExecuteAsync<List<Book>>(restRequest);
 
         //Assert
-        /*Magic number: 3 Total pre-seeded data=3. Test is looking if the pre-seeded data count tallys*/
+        /*Magic number: 3 Total pre-seeded data=3. 
+        Test is looking if the pre-seeded data count tallys*/
         responses.Data!.Count.Should().Be(3);
 
         foreach (var bookAuthor in bookAuthors)
@@ -102,7 +104,8 @@ public class LibraryAPIIntegrationTests
       
     }
 
-    //Test to verify DELETE verb and also does the tear down
+    /*Test to validate DELETE books and also does the
+     tear down of records from the above steps*/
     [Fact, Order(5)]
     public void Ensure_Enduser_IsAbleTo_DeleteBooksAsync()
     {
