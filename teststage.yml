@@ -9,8 +9,8 @@ parameters:
 stages:
      - stage: ${{ parameters.testStageName }}
        dependsOn:
-         - DeployApp
-       condition: succeeded('DeployApp')
+         - Deploy
+       condition: succeeded('Deploy')
        jobs:
            - template: testjob.yml
              parameters:
