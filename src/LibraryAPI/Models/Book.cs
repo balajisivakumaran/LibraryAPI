@@ -15,6 +15,7 @@ namespace LibraryAPI.Models
         [Required]
         public string Author { get; set; } = null!;
 
+        /*Validation: year range added 1000 to DateTime.Now.Year*/
         public int? YearofPublish { get; set;}
 
     }
