@@ -20,11 +20,13 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Library API V1");
         c.RoutePrefix = string.Empty;
+    });
 }
 
 app.MapGet("/", async context => {
-    context.response.Redirect("/swagger/index.html", permanent: true)
-})
+    context.Response.Redirect("/swagger/index.html", permanent: true);
+});
+
 app.UseHttpsRedirection();
 
 app.MapGet("api/v1/books", async(AppDbContext context) => {
