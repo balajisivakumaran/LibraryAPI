@@ -3,10 +3,20 @@ using LibraryAPI.Data;
 using LibraryAPI.Helper;
 using LibraryAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Library API",
+        Version = "v1",
+        Description = "The intend of this deployment is to orchestrate any code check ins automatically build, " +
+                      "unit test, deploy into the Azure Web App and run the integration test via YAML pipeline"
+    });
+});
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("Library"));
 builder.Services.AddScoped<IValidator<Book>, BookValidator>();
 
@@ -23,8 +33,9 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
     });
 }
 
-app.MapGet("/", async context => {
+app.MapGet("/",  context => {
     context.Response.Redirect("/swagger/index.html", permanent: true);
+    return Task.CompletedTask;
 });
 
 app.UseHttpsRedirection();
