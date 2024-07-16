@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen(c =>
     {
         Title = "Library API",
         Version = "v1",
-        Description = "The intend of this deployment is to orchestrate any code check ins automatically build, " +
+        Description = "The intend of this deployment is to orchestrate code check ins to automatically build, " +
                       "unit test, deploy into the Azure Web App and run the integration test via YAML pipeline"
     });
 });
